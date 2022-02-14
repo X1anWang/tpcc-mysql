@@ -76,9 +76,6 @@ main(argc, argv)
 	char	       db_password[DB_STRING_MAX];
 	char	       db_key[DB_STRING_MAX];
 	char	       db_cert[DB_STRING_MAX];
-	char	       db_ca[DB_STRING_MAX];
-	char	       db_capath[DB_STRING_MAX];
-	char	       db_cipher[DB_STRING_MAX];
         int            port= 3306;
 
 	int i,c;
@@ -87,11 +84,6 @@ main(argc, argv)
 
 	/* initialize */
 	count_ware = 0;
-    db_key = NULL;
-    db_cert = NULL;
-    db_ca = NULL;
-    db_capath = NULL;
-    db_cipher = NULL;
 
 	printf("*************************************\n");
 	printf("*** TPCC-mysql Data Loader        ***\n");
@@ -99,7 +91,7 @@ main(argc, argv)
 
   /* Parse args */
 
-    while ( (c = getopt(argc, argv, "h:P:d:u:p:w:l:m:n:k:c:C:a:i:")) != -1) {
+    while ( (c = getopt(argc, argv, "h:P:d:u:p:w:l:m:n:k:c:")) != -1) {
         switch (c) {
         case 'h':
             printf ("option h with value '%s'\n", optarg);
@@ -146,20 +138,8 @@ main(argc, argv)
             printf ("option c with value '%s'\n", optarg);
             strncpy(db_cert, optarg, DB_STRING_MAX);
             break;
-        case 'C':
-            printf ("option C with value '%s'\n", optarg);
-            strncpy(db_ca, optarg, DB_STRING_MAX);
-            break;
-        case 'a':
-            printf ("option a with value '%s'\n", optarg);
-            strncpy(db_capath, optarg, DB_STRING_MAX);
-            break;
-        case 'i':
-            printf ("option i with value '%s'\n", optarg);
-            strncpy(db_cipher, optarg, DB_STRING_MAX);
-            break;
         case '?':
-    	    printf("Usage: tpcc_load -h server_host -P port -d database_name -u mysql_user -p mysql_password -w warehouses -l part -m min_wh -n max_wh -k key -c cert -C ca -a capath -i cipher\n");
+    	    printf("Usage: tpcc_load -h server_host -P port -d database_name -u mysql_user -p mysql_password -w warehouses -l part -m min_wh -n max_wh -k key -c cert\n");
     	    printf("* [part]: 1=ITEMS 2=WAREHOUSE 3=CUSTOMER 4=ORDERS\n");
             exit(0);
         default:
@@ -201,10 +181,6 @@ main(argc, argv)
 
 	printf("    [ssl-key]: %d\n", db_key);
 	printf("   [ssl-cert]: %d\n", db_cert);
-    printf("     [ssl-ca]: %d\n", db_ca);
-    printf(" [ssl-capath]: %d\n", db_capath);
-    printf("   [ssl-cipher]: %d\n", db_cipher);
-
 
 	fd = open("/dev/urandom", O_RDONLY);
 	if (fd == -1) {
@@ -233,11 +209,11 @@ main(argc, argv)
 
 	if(is_local==1){
 	    /* exec sql connect :connect_string; */
-        mysql_ssl_set(db_key, db_cert, db_ca, db_capathm, db_cipher);
+        mysql_ssl_set(db_key, db_cert, NULL, NULL, NULL);
 	    resp = mysql_real_connect(mysql, "localhost", db_user, db_password, db_string, port, NULL, 0);
 	}else{
 	    /* exec sql connect :connect_string USING :db_string; */
-        mysql_ssl_set(db_key, db_cert, db_ca, db_capathm, db_cipher);
+        mysql_ssl_set(db_key, db_cert, NULL, NULL, NULL);
         resp = mysql_real_connect(mysql, connect_string, db_user, db_password, db_string, port, NULL, 0);
 	}
 
