@@ -91,7 +91,7 @@ main(argc, argv)
 
   /* Parse args */
 
-    while ( (c = getopt(argc, argv, "h:P:d:u:p:w:l:m:n:k:c:")) != -1) {
+    while ( (c = getopt(argc, argv, "h:P:d:u:p:k:C:w:l:m:n:")) != -1) {
         switch (c) {
         case 'h':
             printf ("option h with value '%s'\n", optarg);
@@ -134,12 +134,12 @@ main(argc, argv)
             printf ("option k with value '%s'\n", optarg);
             strncpy(db_key, optarg, DB_STRING_MAX);
             break;
-        case 'c':
-            printf ("option c with value '%s'\n", optarg);
+        case 'C':
+            printf ("option C with value '%s'\n", optarg);
             strncpy(db_cert, optarg, DB_STRING_MAX);
             break;
         case '?':
-    	    printf("Usage: tpcc_load -h server_host -P port -d database_name -u mysql_user -p mysql_password -w warehouses -l part -m min_wh -n max_wh -k key -c cert\n");
+    	    printf("Usage: tpcc_load -h server_host -P port -d database_name -u mysql_user -p mysql_password -k key -C cert -w warehouses -l part -m min_wh -n max_wh\n");
     	    printf("* [part]: 1=ITEMS 2=WAREHOUSE 3=CUSTOMER 4=ORDERS\n");
             exit(0);
         default:
