@@ -209,11 +209,11 @@ main(argc, argv)
 
 	if(is_local==1){
 	    /* exec sql connect :connect_string; */
-        mysql_ssl_set(db_key, db_cert, NULL, NULL, NULL);
+        mysql_ssl_set(mysql, db_key, db_cert, NULL, NULL, NULL);
 	    resp = mysql_real_connect(mysql, "localhost", db_user, db_password, db_string, port, NULL, 0);
 	}else{
 	    /* exec sql connect :connect_string USING :db_string; */
-        mysql_ssl_set(db_key, db_cert, NULL, NULL, NULL);
+        mysql_ssl_set(mysql, db_key, db_cert, NULL, NULL, NULL);
 	    resp = mysql_real_connect(mysql, connect_string, db_user, db_password, db_string, port, NULL, 0);
 	}
 
